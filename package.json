@@ -1,0 +1,17 @@
+{
+  "name": "rw.io",
+  "version": "0.0.1",
+  "description": "railwayjs+socketio",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodeunit test/*.js"
+  },
+  "repository": "",
+  "keywords": [
+    "socket.io",
+    "railwayjs",
+    "kontroller"
+  ],
+  "author": "Anatoliy Chakkaev",
+  "license": "MIT"
+}
