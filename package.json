@@ -1,6 +1,6 @@
 {
   "name": "rw.io",
-  "version": "0.0.1",
+  "version": "0.0.1_1",
   "description": "railwayjs+socketio",
   "main": "index.js",
   "scripts": {

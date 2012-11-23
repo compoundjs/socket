@@ -5,7 +5,7 @@ exports.init = function () {
 
     var io = sio.listen(app);
 
-    railway.controller.prototype.socket = function (id) {
+    railway.controller.Controller.prototype.socket = function (id) {
         return io.sockets.in(id || this.req.sessionID);
     };
 
