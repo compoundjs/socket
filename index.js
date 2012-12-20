@@ -1,12 +1,15 @@
 var sio = require('socket.io');
 var fn = function () {};
+var http = require('http');
 
 exports.init = function (compound) {
 
     var app = compound.app;
-    var io = sio.listen(app);
+    var server = http.createServer(app);
+    compound.server = server;
+    var io = sio.listen(server);
 
-    compound.controller.prototype.socket = function (id) {
+    compound.controllerExtensions.socket = function (id) {
         return io.sockets.in(id || this.req.sessionID);
     };
 
@@ -70,7 +73,7 @@ exports.init = function (compound) {
 
         socket.join(hs.sessionID);
 
-        var bridge = new compound.ControllerBridge(app.root);
+        var bridge = new compound.ControllerBridge(compound);
         map.forEach(function (r) {
             socket.on(r.event, function (data) {
                 var ctl = bridge.loadController(r.controller);
