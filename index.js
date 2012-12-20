@@ -1,17 +1,18 @@
 var sio = require('socket.io');
 var fn = function () {};
 
-exports.init = function () {
+exports.init = function (compound) {
 
+    var app = compound.app;
     var io = sio.listen(app);
 
-    railway.controller.prototype.socket = function (id) {
+    compound.controller.prototype.socket = function (id) {
         return io.sockets.in(id || this.req.sessionID);
     };
 
     var map = [];
 
-    railway.routeMapper.socket = function (msg, handle) {
+    compound.routeMapper.socket = function (msg, handle) {
         map.push({
             event: msg,
             controller: handle.split('#')[0],
@@ -69,7 +70,7 @@ exports.init = function () {
 
         socket.join(hs.sessionID);
 
-        var bridge = new railway.ControllerBridge(app.root);
+        var bridge = new compound.ControllerBridge(app.root);
         map.forEach(function (r) {
             socket.on(r.event, function (data) {
                 var ctl = bridge.loadController(r.controller);
