@@ -50,6 +50,8 @@ exports.init = function (compound) {
             delete req.on;
         };
 
+        req.originalUrl = '/';
+
         cookieParser(req, null, function (err) {
             if (err) return accept('Error in cookie parser', false);
             session(req, {on: fn, end: fn}, function (err) {
