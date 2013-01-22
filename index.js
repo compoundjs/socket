@@ -82,7 +82,8 @@ exports.init = function (compound) {
                 ctl.perform(r.action, {
                     session: hs.session,
                     sessionID: hs.sessionID,
-                    params: data
+                    params: data,
+                    socket: socket
                 }, {}, fn);
             });
         });
