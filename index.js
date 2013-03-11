@@ -38,6 +38,7 @@ exports.init = function (compound) {
     });
 
     io.set('authorization', function (req, accept) {
+        console.log(req.headers);
         // check if there's a cookie header
         if (!req.headers.cookie) {
             // if there isn't, turn down the connection with a message
@@ -80,6 +81,7 @@ exports.init = function (compound) {
         var bridge = new ControllerBridge(compound);
         map.forEach(function (r) {
             socket.on(r.event, function (data) {
+                console.log('fafafa');
                 var ctl = bridge.loadController(r.controller);
                 delete hs.session.csrfToken;
                 ctl.perform(r.action, {
