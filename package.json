@@ -1,10 +1,10 @@
 {
   "name": "co-socket",
-  "version": "0.0.1-1",
+  "version": "0.0.1-2",
   "description": "compoundjs+socketio",
   "main": "index.js",
   "scripts": {
-    "test": "nodeunit test/*.js"
+    "test": "make test"
   },
   "dependencies": {
     "socket.io": "latest",
@@ -15,9 +15,6 @@
     "should": "1.2.2",
     "semicov": "0.1.1",
     "express": "3.x"
-  },
-  "scripts": {
-    "test": "make test"
   },
   "repository": {
     "type": "git",
