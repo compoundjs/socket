@@ -1,7 +1,7 @@
 {
-  "name": "rw.io",
-  "version": "0.0.2-1",
-  "description": "railwayjs+socketio",
+  "name": "co-socket",
+  "version": "0.0.1",
+  "description": "compoundjs+socketio",
   "main": "index.js",
   "scripts": {
     "test": "nodeunit test/*.js"

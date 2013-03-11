@@ -15,7 +15,7 @@ exports.init = function (compound) {
 
     var map = [];
 
-    compound.routeMapper.socket = function (msg, handle) {
+    compound.map.socket = function (msg, handle) {
         map.push({
             event: msg,
             controller: handle.split('#')[0],
@@ -29,7 +29,7 @@ exports.init = function (compound) {
         switch (m.handle.name) {
             case 'cookieParser':
             cookieParser = m.handle;
-            break
+            break;
             case 'session':
             session = m.handle;
             break;
