@@ -1,6 +1,7 @@
 var sio = require('socket.io');
 var fn = function () {};
 var http = require('http');
+var ControllerBridge = require('compound/lib/controller-bridge');
 
 exports.init = function (compound) {
 
@@ -75,7 +76,7 @@ exports.init = function (compound) {
 
         socket.join(hs.sessionID);
 
-        var bridge = new compound.ControllerBridge(compound);
+        var bridge = new ControllerBridge(compound);
         map.forEach(function (r) {
             socket.on(r.event, function (data) {
                 var ctl = bridge.loadController(r.controller);
