@@ -1,14 +1,11 @@
 var sio = require('socket.io');
 var fn = function () {};
-var http = require('http');
 var ControllerBridge = require('compound/lib/controller-bridge');
 
 exports.init = function (compound) {
 
     var app = compound.app;
-    var server = http.createServer(app);
-    compound.server = server;
-    var io = sio.listen(server);
+    var io = sio.listen(compound.server);
 
     // You can configure socket.io at this point.
     compound.emit('socket.io', io);
@@ -59,6 +56,7 @@ exports.init = function (compound) {
         cookieParser(req, null, function (err) {
             if (err) return accept('Error in cookie parser', false);
             session(req, {on: fn, end: fn}, function (err) {
+                if (err) return accept('Error while reading session', false);
                 accept(null, true);
             });
         });
