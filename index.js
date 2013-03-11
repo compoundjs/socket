@@ -81,12 +81,22 @@ exports.init = function (compound) {
         map.forEach(function (r) {
             socket.on(r.event, function (data) {
                 var ctl = bridge.loadController(r.controller);
+                delete hs.session.csrfToken;
                 ctl.perform(r.action, {
+                    method: 'SOCKET',
+                    url: r.action,
+                    app: app,
+                    param: function(key) {
+                        return data[key];
+                    },
+                    header: function() {
+                        return null;
+                    },
                     session: hs.session,
                     sessionID: hs.sessionID,
                     params: data,
                     socket: socket
-                }, {}, fn);
+                }, {send: function() {}}, fn);
             });
         });
 
