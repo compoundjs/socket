@@ -10,6 +10,9 @@ exports.init = function (compound) {
     compound.server = server;
     var io = sio.listen(server);
 
+    // You can configure socket.io at this point.
+    compound.emit('rwio', io);
+
     compound.controllerExtensions.socket = function (id) {
         return io.sockets.in(id || this.req.sessionID);
     };
@@ -83,7 +86,8 @@ exports.init = function (compound) {
                 ctl.perform(r.action, {
                     session: hs.session,
                     sessionID: hs.sessionID,
-                    params: data
+                    params: data,
+                    socket: socket
                 }, {}, fn);
             });
         });
