@@ -6,7 +6,23 @@
   "scripts": {
     "test": "nodeunit test/*.js"
   },
-  "repository": "",
+  "dependencies": {
+    "socket.io": "latest",
+    "compound": ">= 1.1.5-16"
+  },
+  "devDependencies": {
+    "mocha": "1.8.1",
+    "should": "1.2.2",
+    "semicov": "0.1.1",
+    "express": "3.x"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/compoundjs/socket.git"
+  },
   "keywords": [
     "socket.io",
     "railwayjs",

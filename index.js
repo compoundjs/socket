@@ -11,7 +11,7 @@ exports.init = function (compound) {
     var io = sio.listen(server);
 
     // You can configure socket.io at this point.
-    compound.emit('rwio', io);
+    compound.emit('socket.io', io);
 
     compound.controllerExtensions.socket = function (id) {
         return io.sockets.in(id || this.req.sessionID);
@@ -19,7 +19,7 @@ exports.init = function (compound) {
 
     var map = [];
 
-    compound.map.socket = function (msg, handle) {
+    compound.map.socket = function(msg, handle) {
         map.push({
             event: msg,
             controller: handle.split('#')[0],
@@ -29,7 +29,7 @@ exports.init = function (compound) {
 
     var cookieParser, session;
 
-    app.stack.forEach(function (m) {
+    app.stack.forEach(function(m) {
         switch (m.handle.name) {
             case 'cookieParser':
             cookieParser = m.handle;
@@ -39,7 +39,6 @@ exports.init = function (compound) {
             break;
         }
     });
-
 
     io.set('authorization', function (req, accept) {
         // check if there's a cookie header
@@ -53,6 +52,7 @@ exports.init = function (compound) {
         req.removeListener = function () {
             delete req.on;
         };
+        req.app = app;
 
         req.originalUrl = '/';
 
