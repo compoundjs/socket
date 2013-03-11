@@ -1,11 +1,12 @@
 ## About
 
-Socket.IO bindings for railwayjs
+Socket.IO bindings for CompoundJS
 
 ## Installataion
 
-    npm install socket.io rw.io
-    echo "require('rw.io');" >> npmfile.js
+    npm install co-socket --save
+
+then add `co-socket` to `config/autoload.js`
 
 ## API
 
