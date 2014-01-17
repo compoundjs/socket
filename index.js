@@ -7,9 +7,6 @@ exports.init = function (compound) {
     var app = compound.app;
     var io = sio.listen(compound.server);
 
-    // You can configure socket.io at this point.
-    compound.emit('socket.io', io);
-
     compound.controllerExtensions.socket = function (id) {
         return io.sockets.in(id || this.req.sessionID);
     };
@@ -104,5 +101,7 @@ exports.init = function (compound) {
 
     });
 
+    // You can configure socket.io at this point.
+    compound.emit('socket.io', io);
 };
 
