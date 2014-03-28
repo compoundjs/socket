@@ -2,7 +2,7 @@
 
 Socket.IO bindings for CompoundJS
 
-## Installataion
+## Installation
 
     npm install co-socket --save
 
