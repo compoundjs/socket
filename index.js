@@ -11,6 +11,10 @@ exports.init = function (compound) {
         return io.sockets.in(id || this.req.sessionID);
     };
 
+    compound.controllerExtensions.socketClients = function (id) {
+        return io.sockets.clients(id || this.req.sessionID);
+    }
+
     var map = [];
 
     compound.map.socket = function(msg, handle) {
