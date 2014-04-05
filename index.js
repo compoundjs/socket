@@ -11,6 +11,10 @@ exports.init = function (compound) {
         return io.sockets.in(id || this.req.sessionID);
     };
 
+    compound.controllerExtensions.socketClients = function (id) {
+        return io.sockets.clients(id || this.req.sessionID);
+    }
+
     var map = [];
 
     compound.map.socket = function(msg, handle) {
@@ -77,8 +81,7 @@ exports.init = function (compound) {
 
         var bridge = new ControllerBridge(compound);
         map.forEach(function (r) {
-            socket.on(r.event, function (data) {
-                console.log('fafafa');
+            socket.on(r.event, function (data, callback) {
                 var ctl = bridge.loadController(r.controller);
                 delete hs.session.csrfToken;
                 ctl.perform(r.action, {
@@ -95,7 +98,7 @@ exports.init = function (compound) {
                     sessionID: hs.sessionID,
                     params: data,
                     socket: socket
-                }, {send: function() {}}, fn);
+                }, { send: callback }, fn);
             });
         });
 
