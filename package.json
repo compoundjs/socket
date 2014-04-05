@@ -1,6 +1,6 @@
 {
   "name": "co-socket",
-  "version": "0.0.1-3",
+  "version": "0.0.2",
   "description": "compoundjs+socketio",
   "main": "index.js",
   "scripts": {
