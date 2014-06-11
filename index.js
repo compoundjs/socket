@@ -3,17 +3,12 @@ var fn = function () {};
 var ControllerBridge = require('compound/lib/controller-bridge');
 
 exports.init = function (compound) {
-
     var app = compound.app;
-    var io = sio.listen(compound.server);
+    var io = sio(compound.server);
 
     compound.controllerExtensions.socket = function (id) {
-        return io.sockets.in(id || this.req.sessionID);
+        return io.to(id || this.req.sessionID);
     };
-
-    compound.controllerExtensions.socketClients = function (id) {
-        return io.sockets.clients(id || this.req.sessionID);
-    }
 
     var map = [];
 
@@ -38,52 +33,36 @@ exports.init = function (compound) {
         }
     });
 
-    io.set('authorization', function (req, accept) {
-        console.log(req.headers);
-        // check if there's a cookie header
-        if (!req.headers.cookie) {
-            // if there isn't, turn down the connection with a message
-            // and leave the function.
-            return accept('No cookie transmitted.', false);
-        }
+    io.use(function (socket, next) {
+        var req = socket.request;
 
-        req.on = fn;
-        req.removeListener = function () {
-            delete req.on;
-        };
-        req.app = app;
+        if (!req.headers.cookie) {
+            return next(new Error('No cookie transmitted.'));
+        }
 
         req.originalUrl = '/';
 
         cookieParser(req, null, function (err) {
-            if (err) return accept('Error in cookie parser', false);
-            session(req, {on: fn, end: fn}, function (err) {
-                if (err) return accept('Error while reading session', false);
-                accept(null, true);
+            if (err) return next(new Error('Error in cookie parser'));
+
+            session(req, { on: fn, end: fn }, function (err) {
+                if (err) return next(new Error('Error while reading session'));
+
+                next();
             });
         });
     });
 
-    io.sockets.on('connection', function (socket) {
-        console.log(socket.handshake.sessionID);
-        var hs = socket.handshake;
-        console.log('A socket with userId ' + hs.sessionID + ' connected!');
+    io.on('connection', function (socket) {
+        var req = socket.request;
 
-        socket.on('disconnect', function () {
-            console.log('A socket with sessionID ' + hs.sessionID
-                + ' disconnected!');
-            // clear the socket interval to stop refreshing the session
-        });
-
-        var groupId;
-
-        socket.join(hs.sessionID);
+        socket.join(req.sessionID);
 
         var bridge = new ControllerBridge(compound);
         map.forEach(function (r) {
             socket.on(r.event, function (data, callback) {
                 var ctl = bridge.loadController(r.controller);
-                delete hs.session.csrfToken;
+                delete req.session.csrfToken;
                 ctl.perform(r.action, {
                     method: 'SOCKET',
                     url: r.action,
@@ -94,17 +73,15 @@ exports.init = function (compound) {
                     header: function() {
                         return null;
                     },
-                    session: hs.session,
-                    sessionID: hs.sessionID,
+                    session: req.session,
+                    sessionID: req.sessionID,
                     params: data,
                     socket: socket
                 }, { send: callback }, fn);
             });
         });
-
     });
 
     // You can configure socket.io at this point.
     compound.emit('socket.io', io);
 };
-
