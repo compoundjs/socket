@@ -1,13 +1,13 @@
 {
   "name": "co-socket",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "compoundjs+socketio",
   "main": "index.js",
   "scripts": {
     "test": "make test"
   },
   "dependencies": {
-    "socket.io": "latest",
+    "socket.io": "= 1.0.4",
     "compound": ">= 1.1.5-16"
   },
   "devDependencies": {
