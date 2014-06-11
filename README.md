@@ -16,19 +16,16 @@ When client emit event `some-event`, then `action` action of controller `control
 Data passed to the event will be available as `params` variable.
 Calling `send` will call the callback to the current socket.
 
-### Available methods in any controller
+### `socket()` method is available in any controller
     action('some-action', function () {
         socket().emit('event', {some: 'data'}); // send 'event' to all clients in current session
         socket(anotherSessionID).emit('hello'); // send 'hello' to another user
-                                                // identifyed by anotherSessionID
+                                                // identified by anotherSessionID
 
-        var clients = socketClients();          // list of current session clients
+        var clients = socket().connected;       // list of current session clients
         clients.forEach(function (client) {
-            client.join('room');                // current session clients join a room
+            client.join('room');                // all current session clients join a room
         });
-
-        // List of clients in another session
-        var anotherSessionClients = socketClients(anotherSessionID);
     });
 
 Any controller action (both socket and non-socket) can emit some event with any client.
@@ -47,7 +44,7 @@ Any controller action (both socket and non-socket) can emit some event with any 
 
 ## Inner structure
 All socket.io connections automatically join a room named after the compound sessionID.
-If you want to communicate with another user you can specify their sessionID as param for both `socket` or `socketClients` method.
+If you want to communicate with another user you can specify their sessionID as param for the `socket` method.
 
 ## License
 
